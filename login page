@@ -1,0 +1,82 @@
+<?php
+$error = "";
+
+// Process form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $phone = $_POST["phone"];
+    $password = $_POST["password"];
+
+    // Validation Rules
+    if (!preg_match("/^[a-zA-Z ]*$/", $name)) {
+        $error = "❌ Name should contain only letters and spaces.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "❌ Invalid email format.";
+    } elseif (!preg_match("/^[0-9]{10}$/", $phone)) {
+        $error = "❌ Phone number must be exactly 10 digits.";
+    } elseif (strlen($password) < 6) {
+        $error = "❌ Password must be at least 6 characters.";
+    } else {
+        // Successful validation
+        $error = "✅ Login Successful!";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Disaster Awareness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+        <h2 class="text-2xl font-bold text-center mb-4">Login</h2>
+        
+        <?php if ($error): ?>
+            <p class="text-center text-red-600 font-semibold"><?php echo $error; ?></p>
+        <?php endif; ?>
+
+        <form action="login.php" method="POST" class="space-y-4">
+            <!-- Name Field -->
+            <div>
+                <label class="block font-semibold">Name</label>
+                <input type="text" name="name" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" required>
+            </div>
+
+            <!-- Email Field -->
+            <div>
+                <label class="block font-semibold">Email</label>
+                <input type="email" name="email" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" required>
+            </div>
+
+            <!-- Phone Number -->
+            <div>
+                <label class="block font-semibold">Phone Number</label>
+                <input type="text" name="phone" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" required>
+            </div>
+
+            <!-- Password Field -->
+            <div>
+                <label class="block font-semibold">Password</label>
+                <input type="password" name="password" class="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500" required>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                Login
+            </button>
+        </form>
+
+        <p class="text-center mt-4 text-gray-600">
+            Don't have an account? <a href="register.php" class="text-blue-600 font-semibold">Sign Up</a>
+        </p>
+    </div>
+
+</body>
+</html>
+ login page
